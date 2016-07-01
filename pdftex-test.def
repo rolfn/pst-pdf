@@ -1,4 +1,4 @@
-\ProvidesFile{pdftex.def}[2016/06/17 v0.06h Graphics/color for pdfTeX]
+\ProvidesFile{pdftex.def}[2016/06/29 v0.06i Graphics/color for pdfTeX]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %% LaTeX Colour and Graphics support for PDFTeX
@@ -1565,11 +1565,16 @@ E     \else
     \else
       \ifnum\driver@release>9 %
         \ifnum\pdfminorversion>3 %
-          \def\Gin@extensions{%
-            .png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,%
-            .PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,%
-	    .eps%
-          }%
+         \@ifpackageloaded{pst-pdf}%
+           {\def\Gin@extensions{%
+              .png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,%
+              .PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2}
+           }%
+           {\def\Gin@extensions{%
+              .png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,%
+              .PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,%
+              .eps}%
+           }%
         \fi
         \@namedef{Gin@rule@.jb2}#1{{jbig2}{.jb2}{#1}}%
         \@namedef{Gin@rule@.jbig2}#1{{jbig2}{.jbig2}{#1}}%
