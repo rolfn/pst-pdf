@@ -9,6 +9,8 @@
 # 2006-07-14: Better temp dir handling (suggested by Karl Berry) (RN).
 # 2006-07-23: New option --Xps2pdf and code cleanup (thanks to Karl Berry) (RN).
 # 2008-08-04: Remove the parameter "-Ppdf" from the dvips call (RN).
+# 2016-07-02: New option "--xelatex",   (hv)
+#                        "--lualatex" , (hv)
 
 # First, work around bugs/limitations in some shells on some systems:
 test -f /bin/sh5 && test -z "$RUNNING_SH5" \
@@ -23,17 +25,6 @@ unset RUNNING_BSH
 
 # hack around a bug in zsh:
 test -n "${ZSH_VERSION+set}" && alias -g '${1+"$@"}'='"$@"'
-
-# look for other engines
-if [ $# -gt 1 ] ; then
-  ENGINE1="$1 --output-format=dvi"
-  ENGINE2=$1
-  FILE=$2 ;
-else 
-  ENGINE1=latex
-  ENGINE2=pdflatex
-  FILE=$1 ;
-fi
 
 ###############################################################################
 # cleanup()
@@ -95,6 +86,14 @@ tmpdir=${TMPDIR-${TEMP-${TMP-/tmp}}}/.$progname$$
 log=$tmpdir/log
 version="1.0"
 
+## the defaults
+ENGINE1=latex
+OPTIONS=
+ENGINE2=pdflatex
+DVIPS=dvips
+PS2PDF=ps2pdf
+FILE=$1
+
 # look for optional things first
 while
   case $1 in
@@ -106,6 +105,13 @@ while
               echo "--crop runs pdfcrop on ps2pdf output."
   		                   exit 0;;
    --version) echo "$progname version $version"; exit 0;;
+   --lualatex) ENGINE1=lualatex; 
+               OPTIONS=" --output-format=dvi"; 
+               ENGINE2=lualatex; FILE=$2;;
+   --xelatex)  ENGINE1=xelatex;   
+               OPTIONS="-no-pdf";              
+               ENGINE2=xelatex;  
+               DVIPS=xdvipdfmx; FILE=$2;;
    --crop|-c) crop=true;;
    --Xps2pdf|-Xps2pdf) shift; ps2pdf_opts="$ps2pdf_opts $1";;
    -q) silent=true;;
@@ -128,17 +134,15 @@ fi
 job=`echo "x$1" | sed 's@x@@; s@.*/@@; s@\.[^.]*$@@'`
 
 setupTmpDir
-myexec ${ENGINE1} \
-    "\AtBeginDocument{\RequirePackage{pst-pdf}} \input{$FILE}"
-test -f "$job.dvi" && myexec dvips -o "$job-pics.ps" "$job.dvi"
-test -f "$job-pics.ps" && myexec ps2pdf \
-  "$ps2pdf_opts" "$job-pics.ps" "$job-pics.pdf"
+myexec ${ENGINE1} ${OPTIONS} "\AtBeginDocument{\RequirePackage{pst-pdf}} \input{$FILE}"
+test -f "$job.dvi" && myexec ${DVIPS} -o "$job-pics.ps" "$job.dvi"
+test -f "$job-pics.ps" && myexec ${PS2PDF} "$ps2pdf_opts" "$job-pics.ps" "$job-pics.pdf"
+test -f "$job.xdv" && myexec ${DVIPS} -o "$job-pics.pdf" "$job.xdv" 
 if $crop; then
   myexec pdfcrop "$job-pics.pdf" "$job-pics-crop.pdf" 
   mv "$job-pics-crop.pdf" "$job-pics.pdf"
 fi
-myexec ${ENGINE2} \
-    "\AtBeginDocument{\RequirePackage{pst-pdf}} \input{$FILE}"
+myexec ${ENGINE2} "\AtBeginDocument{\RequirePackage{pst-pdf}} \input{$FILE}"
 true
 cleanup
 
