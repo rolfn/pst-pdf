@@ -23,7 +23,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesPackage{pst-pdf}
-    [2016/06/23 v1.2a PS graphics for pdfLaTeX (RN,HjG)]
+    [2016/07/08 v1.2a PS graphics for pdfLaTeX (RN,HjG)]
 \newcommand*\ppf@TeX@mode{-1}
 \newcommand*\ppf@draft{false}
 \newif\if@ppf@PST@used\@ppf@PST@usedtrue
@@ -47,7 +47,6 @@
   \RequirePackage{ifpdf,ifxetex,ifvtex}%
   \ifpdf
     \def\ppf@TeX@mode{1}%
-    \iffalse
     \@ifundefined{pdfximage}{\let\pdfximage=\saveimageresource}{}%
     \@ifundefined{pdflastximage}%
       {\let\pdflastximage=\lastsavedimageresourceindex}{}%
@@ -55,9 +54,6 @@
       {\let\pdfrefximage=\useimageresource}{}%
     \@ifundefined{pdflastximagepages}%
       {\let\pdflastximagepages=\lastsavedimageresourcepages}{}%
-    \else
-      \RequirePackage{luatex85}%
-    \fi
   \else
     \ifvtex
       \def\ppf@TeX@mode{9}%
