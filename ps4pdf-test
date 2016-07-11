@@ -11,6 +11,7 @@
 # 2008-08-04: Remove the parameter "-Ppdf" from the dvips call (RN).
 # 2016-07-02: New option "--xelatex",   (hv)
 #                        "--lualatex" , (hv)
+# 2016-07-11: Better tests if xelatex or lualatex (RN)
 
 # First, work around bugs/limitations in some shells on some systems:
 test -f /bin/sh5 && test -z "$RUNNING_SH5" \
@@ -103,10 +104,12 @@ while
               echo "--Xps2pdf OPT passes OPT to ps2pdf."
               echo " (-dAutoRotatePages=/None is always passed.)"
               echo "--crop runs pdfcrop on ps2pdf output."
-  		                   exit 0;;
+              echo "--lualatex using the luatex engine for .dvi and .pdf" 
+              echo "--xelatex using the xetex engine for .xdv and .pdf" 
+              exit 0;;
    --version) echo "$progname version $version"; exit 0;;
    --lualatex) ENGINE1=lualatex; 
-               OPTIONS=" --output-format=dvi"; 
+               OPTIONS="--output-format=dvi"; 
                ENGINE2=lualatex; FILE=$2;;
    --xelatex)  ENGINE1=xelatex;   
                OPTIONS="-no-pdf";              
@@ -135,9 +138,15 @@ job=`echo "x$1" | sed 's@x@@; s@.*/@@; s@\.[^.]*$@@'`
 
 setupTmpDir
 myexec ${ENGINE1} ${OPTIONS} "\AtBeginDocument{\RequirePackage{pst-pdf}} \input{$FILE}"
-test -f "$job.dvi" && myexec ${DVIPS} -o "$job-pics.ps" "$job.dvi"
+
+if test "$ENGINE1" = "latex" || test "$ENGINE1" = "lualatex"; then 
+  myexec ${DVIPS} -o "$job-pics.ps" "$job.dvi" 
+else
+  myexec ${DVIPS} -o "$job-pics.pdf" "$job.xdv"   
+fi
+
 test -f "$job-pics.ps" && myexec ${PS2PDF} "$ps2pdf_opts" "$job-pics.ps" "$job-pics.pdf"
-test -f "$job.xdv" && myexec ${DVIPS} -o "$job-pics.pdf" "$job.xdv" 
+
 if $crop; then
   myexec pdfcrop "$job-pics.pdf" "$job-pics-crop.pdf" 
   mv "$job-pics-crop.pdf" "$job-pics.pdf"
