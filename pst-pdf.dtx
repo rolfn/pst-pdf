@@ -24,7 +24,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{pst-pdf}
 %<*package>
-    [2016/06/23 v1.2a PS graphics for pdfLaTeX (RN,HjG)]
+    [2016/07/11 v1.2a PS graphics for pdfLaTeX (RN,HjG)]
 %</package>
 %
 %<*driver>
@@ -50,7 +50,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{836}
+% \CheckSum{829}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -637,41 +637,35 @@
 % range of functions. This test is only executed when the options |active|
 % or |inactive| were not given.
 % \fi
+% \changes{v1.2a}{2016/07/11}{Engine tests changed (RN)}
 %    \begin{macrocode}
 \ifnum\ppf@TeX@mode=-1\relax
-  \begingroup
+  \RequirePackage{ifpdf,ifxetex,ifvtex}%
+  \ifpdf
 %    \end{macrocode}
-% Default (\TeX{} with a dvi-to-ps converter)
+% \quad$\Rightarrow$\,pdf\TeX{} or Lua\TeX{} are running in PDF mode
 %    \begin{macrocode}
-    \chardef\x=0 %
+    \def\ppf@TeX@mode{1}%
+    \RequirePackage{luatex85}%
+  \else
+    \ifvtex
 %    \end{macrocode}
-% Check pdf\TeX{}
+% \quad$\Rightarrow$\,V\TeX{} 
 %    \begin{macrocode}
-    \@ifundefined{pdfoutput}{}{%
-      \ifcase\pdfoutput\else
-        \chardef\x=1 %
-      \fi
-    }%
+      \def\ppf@TeX@mode{9}%
+    \else
+      \ifxetex
 %    \end{macrocode}
-% Check V\TeX{}
+% \quad$\Rightarrow$\,Xe\TeX{} 
 %    \begin{macrocode}
-    \@ifundefined{OpMode}{}{\chardef\x=2 }%
-  \expandafter\endgroup
-  \ifcase\x
+        \def\ppf@TeX@mode{9}%
+      \else
 %    \end{macrocode}
 % \quad$\Rightarrow$\,DVI mode
 %    \begin{macrocode}
-    \def\ppf@TeX@mode{0}%
-  \or
-%    \end{macrocode}
-% \quad$\Rightarrow$\,pdf\TeX{} is running in PDF mode
-%    \begin{macrocode}
-    \def\ppf@TeX@mode{1}%
-  \else
-%    \end{macrocode}
-% \quad$\Rightarrow$\,V\TeX{} is running
-%    \begin{macrocode}
-    \def\ppf@TeX@mode{9}%
+        \def\ppf@TeX@mode{0}%
+      \fi
+    \fi
   \fi
 \fi
 %    \end{macrocode}

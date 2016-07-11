@@ -13,7 +13,7 @@ LATEX = latex
 ARCHNAME = $(PACKAGE)-$(shell date +"%y%m%d")
 ARCHNAME_TDS = $(PACKAGE).tds
 
-EXAMPLE = $(PACKAGE)-example.tex 
+EXAMPLE = $(PACKAGE)-example2.tex 
 
 ADDINPUTS = penguin.eps elephant.ps knuth.png psf-demo.eps \
   insect1.eps insect15.eps
