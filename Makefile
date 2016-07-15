@@ -13,7 +13,7 @@ LATEX = latex
 ARCHNAME = $(PACKAGE)-$(shell date +"%Y%m%d")
 ARCHNAME_TDS = $(PACKAGE).tds
 
-EXAMPLE = $(PACKAGE)-example.tex 
+EXAMPLE = $(PACKAGE)-example.tex
 
 ADDINPUTS = penguin.eps elephant.ps knuth.png psf-demo.eps \
   insect1.eps insect15.eps
@@ -42,13 +42,13 @@ example : $(EXAMPLE:.tex=.pdf)
 
 $(EXAMPLE:.tex=.pdf) : $(EXAMPLE) $(ADDINPUTS) $(PDF_CONTAINER) $(PACKAGE).sty
 	$(PDFLATEX) $<
-        
+
 dist : doc doc-DE pdf example
 	tar cvzf $(ARCHNAME).tar.gz $(ARCHFILES)
 	@ echo
 	@ echo $(ARCHNAME).tar.gz
 
-%.gls %.pdf : %.dtx $(PACKAGE).sty 
+%.gls %.pdf : %.dtx $(PACKAGE).sty
 	test -f $(basename $<).glo || touch -f $(basename $<).glo
 	test -f $(basename $<).idx || touch -f $(basename $<).idx
 	makeindex -s gglo.ist -t $(basename $<).glg -o $(basename $<).gls \
@@ -57,7 +57,7 @@ dist : doc doc-DE pdf example
 		$(basename $<).idx
 	$(PDFLATEX) $<
 
-$(PACKAGE)-DE.gls $(PACKAGE)-DE.pdf : $(PACKAGE).dtx $(PACKAGE).sty 
+$(PACKAGE)-DE.gls $(PACKAGE)-DE.pdf : $(PACKAGE).dtx $(PACKAGE).sty
 	test -f $(basename $@).glo || touch -f $(basename $@).glo
 	test -f $(basename $@).idx || touch -f $(basename $@).idx
 	makeindex -s gglo.ist -t $(basename $@).glg -o $(basename $@).gls \
@@ -67,8 +67,8 @@ $(PACKAGE)-DE.gls $(PACKAGE)-DE.pdf : $(PACKAGE).dtx $(PACKAGE).sty
 	cp $< $(basename $@).dtx
 	$(PDFLATEX) '\newcommand*{\mainlang}{ngerman}\input{$(basename $@).dtx}'
 	$(RM) $(basename $@).dtx
-        
-%.pdf : %.tex 
+
+%.pdf : %.tex
 	$(PDFLATEX) $<
 
 $(PACKAGE).sty $(EXAMPLE) : $(PACKAGE).ins $(PACKAGE).dtx
@@ -88,16 +88,19 @@ $(PDF_CONTAINER) : $(PDF_CONTAINER:.pdf=.ps)
 	  $(PS2PDF) $< $@; \
 	fi
 
-CHANGES : CHANGES.pdf 
+CHANGES : CHANGES.pdf
 	pdftotext -enc UTF-8 -layout -nopgbrk $< $@
-	
+
 CHANGES.pdf : CHANGES.tex $(PACKAGE).gls
 	$(PDFLATEX) $<
-        
-arch : CHANGES pst-pdf.pdf pst-pdf-DE.pdf pst-pdf-example.pdf 
-	zip $(ARCHNAME).zip $(ARCHFILES)
 
-arch-tds : CHANGES pst-pdf.pdf pst-pdf-DE.pdf pst-pdf-example.pdf 
+arch : CHANGES pst-pdf.pdf pst-pdf-DE.pdf pst-pdf-example.pdf
+	mkdir $(PACKAGE)
+	cp -p $(ARCHFILES) $(PACKAGE)/
+	zip -r $(ARCHNAME).zip $(PACKAGE)/
+	rm -rf $(PACKAGE)/
+
+arch-tds : CHANGES pst-pdf.pdf pst-pdf-DE.pdf pst-pdf-example.pdf
 	$(RM) $(ARCHNAME_TDS).zip
 	mkdir -p tds/tex/latex/pst-pdf
 	mkdir -p tds/doc/latex/pst-pdf
@@ -123,6 +126,6 @@ clean :
               CHANGES.pdf
 
 veryclean : clean
-	$(RM) $(PACKAGE).pdf pst-pdf-DE.pdf $(EXAMPLE:.tex=.pdf) CHANGES  
+	$(RM) $(PACKAGE).pdf pst-pdf-DE.pdf $(EXAMPLE:.tex=.pdf) CHANGES
 
 # EOF
