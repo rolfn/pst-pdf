@@ -1,5 +1,5 @@
 
-# `pst-pdf' -- Rolf Niepraschk, 2008-02-24, Rolf.Niepraschk@ptb.de
+# `pst-pdf' -- Rolf Niepraschk, 2016-07-15, Rolf.Niepraschk@gmx.de
 
 
 .SUFFIXES : .tex .ltx .dvi .ps .pdf .eps
@@ -10,10 +10,10 @@ PDFLATEX = pdflatex
 
 LATEX = latex
 
-ARCHNAME = $(PACKAGE)-$(shell date +"%y%m%d")
+ARCHNAME = $(PACKAGE)-$(shell date +"%Y%m%d")
 ARCHNAME_TDS = $(PACKAGE).tds
 
-EXAMPLE = $(PACKAGE)-example2.tex 
+EXAMPLE = $(PACKAGE)-example.tex 
 
 ADDINPUTS = penguin.eps elephant.ps knuth.png psf-demo.eps \
   insect1.eps insect15.eps
@@ -21,7 +21,7 @@ ADDINPUTS = penguin.eps elephant.ps knuth.png psf-demo.eps \
 PDF_CONTAINER = $(EXAMPLE:.tex=-pics.pdf)
 
 ARCHFILES = $(PACKAGE).dtx $(PACKAGE).ins $(ADDINPUTS) Makefile \
-            README CHANGES CHANGES.tex \
+            README.md CHANGES CHANGES.tex \
             $(PACKAGE).pdf $(PACKAGE)-DE.pdf $(EXAMPLE:.tex=.pdf) \
             ps4pdf \
             ps4pdf.bat \
@@ -89,15 +89,15 @@ $(PDF_CONTAINER) : $(PDF_CONTAINER:.pdf=.ps)
 	fi
 
 CHANGES : CHANGES.pdf 
-	pdftotext -enc Latin1 -layout -nopgbrk $< $@
+	pdftotext -enc UTF-8 -layout -nopgbrk $< $@
 	
 CHANGES.pdf : CHANGES.tex $(PACKAGE).gls
 	$(PDFLATEX) $<
         
-arch : CHANGES
+arch : CHANGES pst-pdf.pdf pst-pdf-DE.pdf pst-pdf-example.pdf 
 	zip $(ARCHNAME).zip $(ARCHFILES)
 
-arch-tds : CHANGES
+arch-tds : CHANGES pst-pdf.pdf pst-pdf-DE.pdf pst-pdf-example.pdf 
 	$(RM) $(ARCHNAME_TDS).zip
 	mkdir -p tds/tex/latex/pst-pdf
 	mkdir -p tds/doc/latex/pst-pdf
@@ -105,7 +105,7 @@ arch-tds : CHANGES
 	mkdir -p tds/scripts/pst-pdf
 	cp pst-pdf.sty tds/tex/latex/pst-pdf/
 	cp CHANGES pst-pdf.pdf pst-pdf-DE.pdf pst-pdf-example.pdf \
-          README tds/doc/latex/pst-pdf/
+          README.md tds/doc/latex/pst-pdf/
 	cp CHANGES.tex elephant.ps insect1.eps insect15.eps \
           knuth.png penguin.eps psf-demo.eps pst-pdf.dtx \
           pst-pdf.ins tds/source/latex/pst-pdf
