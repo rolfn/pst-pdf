@@ -24,7 +24,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{pst-pdf}
 %<*package>
-    [2016/07/11 v1.2a PS graphics for pdfLaTeX (RN,HjG)]
+    [2017/02/25 v1.2b PS graphics for pdfLaTeX (RN,HjG)]
 %</package>
 %
 %<*driver>
@@ -638,9 +638,10 @@
 % or |inactive| were not given.
 % \fi
 % \changes{v1.2a}{2016/07/11}{Engine tests changed (RN)}
+% \changes{v1.2b}{2017/02/25}{Loading packages `if*' at wrong place (RN)} 
 %    \begin{macrocode}
+\RequirePackage{ifpdf,ifxetex,ifvtex}
 \ifnum\ppf@TeX@mode=-1\relax
-  \RequirePackage{ifpdf,ifxetex,ifvtex}%
   \ifpdf
 %    \end{macrocode}
 % \quad$\Rightarrow$\,pdf\TeX{} or Lua\TeX{} are running in PDF mode
