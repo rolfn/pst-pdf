@@ -1,5 +1,5 @@
 
-# `pst-pdf' -- Rolf Niepraschk, 2016-07-15, Rolf.Niepraschk@gmx.de
+# `pst-pdf' -- Rolf Niepraschk, 2017-03-05, Rolf.Niepraschk@gmx.de
 
 
 .SUFFIXES : .tex .ltx .dvi .ps .pdf .eps
@@ -44,7 +44,11 @@ $(EXAMPLE:.tex=.pdf) : $(EXAMPLE) $(ADDINPUTS) $(PDF_CONTAINER) $(PACKAGE).sty
 	$(PDFLATEX) $<
 
 dist : doc doc-DE pdf example
-	tar cvzf $(ARCHNAME).tar.gz $(ARCHFILES)
+	rm -rf $(PACKAGE)
+	mkdir $(PACKAGE)
+	cp -p $(ARCHFILES) $(PACKAGE)/
+	tar cvzf $(ARCHNAME).tar.gz $(PACKAGE)
+	rm -rf $(PACKAGE)
 	@ echo
 	@ echo $(ARCHNAME).tar.gz
 
