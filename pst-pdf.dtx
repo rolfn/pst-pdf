@@ -24,7 +24,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{pst-pdf}
 %<*package>
-    [2017/02/25 v1.2b PS graphics for pdfLaTeX (RN,HjG)]
+    [2017/04/24 v1.2c PS graphics for pdfLaTeX (RN,HjG)]
 %</package>
 %
 %<*driver>
@@ -94,6 +94,8 @@
 % PSTricks environment ``psmatrix'' inside user definitions. (RN,HjG)}
 % \changes{v1.1m}{2006/03/10}{Merge english and german version of the
 % documentation. (RN)}
+% \changes{v1.2c}{2017/04/24}{``postscript'' environment no more allowed before 
+% \cmd{\begin}{\ttfamily\char`\{document\char`\}} (changed example file). }
 % \GetFileInfo{pst-pdf.dtx}
 %
 % \DoNotIndex{\newcommand,\renewcommand,\newenvironment,\renewenvironment}
@@ -1770,12 +1772,6 @@
 
 \pagestyle{empty}
 
-\begin{postscript}[trim=0 0 0 0,ignore]
-  \includegraphics[width=.475\textwidth]{penguin.eps}
-\end{postscript}
-\savepicture{ps:A}
-
-
 \begin{pst-pdf-defs}%
 
 %% This definition must be within the pst-pdf-defs environment!
@@ -1846,19 +1842,15 @@
   \rput(0,-3.8){PSTricks}
   \rput(0,3.8){\LaTeX}
   \showgrid
-\end{pspicture}\savepicture{ps:B}
+\end{pspicture}\savepicture{ps:A}
 
 \vfill\null\newpage
 
-\usepicture{ps:A}
-\hfill
 \includegraphics[width=.475\textwidth]{insect1}
 
 \vfill
 
-\usepicture[angle=180,origin=c]{ps:A}
-\hfill
-\usepicture[width=.47\textwidth]{ps:B}
+\usepicture[width=.47\textwidth]{ps:A}
 
 \includegraphics[width=.475\textwidth,frame=false,
   namefont={\Huge\itshape}]{knuth}
