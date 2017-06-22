@@ -24,7 +24,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{pst-pdf}
 %<*package>
-    [2017/04/24 v1.2c PS graphics for pdfLaTeX (RN,HjG)]
+    [2017/06/22 v1.2d PS graphics for pdfLaTeX (RN,HjG)]
 %</package>
 %
 %<*driver>
@@ -50,7 +50,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{829}
+% \CheckSum{832}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -695,8 +695,10 @@
 %    \end{macrocode}
 % \end{environment}
 %
+% \changes{v1.2d}{2017/06/22}{Version parameter for `graphicx' and rename 
+%   \cmd{\GPT@page} to \cmd{\Gin@page} at several places}
 %    \begin{macrocode}
-\RequirePackage{graphicx}%
+\RequirePackage{graphicx}[2017/06/01]%
 \let\ppf@Ginclude@graphics\Ginclude@graphics
 \let\ppf@Gin@extensions\Gin@extensions
 \let\ppf@Gin@ii\Gin@ii
@@ -896,7 +898,7 @@
   \define@key{Gin}{ignore}[true]{}%
   \define@key{Gin}{showname}[true]{}%
   \define@key{Gin}{namefont}{}%
-  \@ifundefined{GPT@page}{\define@key{Gin}{page}{}}{}
+  \@ifundefined{Gin@page}{\define@key{Gin}{page}{}}{}
 %    \end{macrocode}
 % \changes{v1.0o}{2005/03/12}{New code for ``notightpage''. (RN)}
 % \changes{v1.1r}{2008/05/02}{Fixed values for \cmd{\PreviewBbAdjust} 
@@ -1163,9 +1165,12 @@
 % \ifENGLISH
 % Prevent pdf\TeX's message \texttt{Non-PDF special ignored!}.
 % \fi
+% \changes{v1.2d}{2017/06/22}{\cmd{\c@lor@to@ps} must not be undefined before 
+%   loading `PSTricks'}
 %    \begin{macrocode}
   \if@ppf@PST@used
     \let\ppf@temp\AtBeginDvi\let\AtBeginDvi\@gobble
+    \def\c@lor@to@ps#1 #2\@@{}
     \RequirePackage{pstricks}\let\AtBeginDvi\ppf@temp
   \fi
 %    \end{macrocode}
@@ -1350,7 +1355,7 @@
 %    \begin{macrocode}
   \def\Gin@setfile#1#2#3{\ppf@Gin@setfile{#1}{#2}{#3}%
     \xdef\ppf@filename{%
-      #3\ifx\GPT@page\@empty\else(\GPT@page)\fi}}%
+      #3\ifx\Gin@page\@empty\else(\Gin@page)\fi}}%
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\Gin@ii}
@@ -1405,7 +1410,7 @@
         {%
           \setkeys{Gin}{#1}%
           \ifx\ppf@tempb\PDFcontainer
-            \@temptokena{page=\GPT@page}%
+            \@temptokena{page=\Gin@page}%
           \fi
         }%
         {%
