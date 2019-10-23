@@ -1188,7 +1188,9 @@
 % \fi
 %    \begin{macrocode}
       \PSTricksOff
-      \@ifundefined{c@lor@to@ps}{\def\c@lor@to@ps#1 #2\@@{}}{}}}%
+      \def\c@lor@to@ps#1 #2\@@{}
+    }%
+  }%
 %    \end{macrocode}
 % \ifGERMAN
 % \PS-Ausgabe jetzt verhindern und sp\"ater noch einmal.
