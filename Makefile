@@ -43,7 +43,7 @@ example : $(EXAMPLE:.tex=.pdf)
 $(EXAMPLE:.tex=.pdf) : $(EXAMPLE) $(ADDINPUTS) $(PDF_CONTAINER) $(PACKAGE).sty
 	$(PDFLATEX) $<
 
-dist : doc doc-DE pdf example
+dist : doc doc-DE pdf example CHANGES
 	rm -rf $(PACKAGE)
 	mkdir $(PACKAGE)
 	cp -p $(ARCHFILES) $(PACKAGE)/
