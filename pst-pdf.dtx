@@ -76,7 +76,7 @@
 % \changes{v1.0j}{2005/02/22}{Check AtBeginDocument for package
 %   `pstricks' even if ``nopstricks'' is given. (RN)}
 % \changes{v1.0j}{2005/02/22}{For \cmd{\includegraphics}
-% \cmd{\usepicture} and |postscript| the new options ``frame'',
+% \cmd{\usepicture} and \string\verb+postscript+ the new options ``frame'',
 % ``framesep'', ``framerule'', ``linewidth'', and ``ignore'' added. (RN)}
 % \changes{v1.0l}{2005/02/25}{Options ``framesep'', ``framerule'',
 % ``linewidth'' removed, ``fname'' and ``innerframe'' added. (RN)}
@@ -484,7 +484,7 @@
 %   \cmd{\includegraphicx}\oarg{keys}\parg{pfxadd}\ooarg{ovpfgd}\oarg{ovpbgd}%
 %     \marg{filename}
 %   \par\noindent
-%   Wie im Paket \pkgname{psfragx} definiert zu verwenden.
+%   To be used like defined in package\pkgname{psfragx}.
 %   \medskip
 %
 %   \DescribeMacro{\savepicture}
@@ -498,18 +498,17 @@
 %   \DescribeMacro{\usepicture}
 %   \cmd{\usepicture}\oarg{keys}\marg{name}
 %   \par\noindent
-%   Die zuvor mit \cmd{\savepicture} gespeicherte Grafik wird
-%   ausgegeben. Der optionale Parameter entpricht dem bei der Anweisung
-%   \cmd{\includegraphics} m\"oglichen.
+%   The graphic previously stored with \cmd{\savepicture} is outputted. The 
+%   optional parameter corresponds to \cmd{\includegraphics}.
 %   \medskip
 %
 %   \DescribeEnv{pst-pdf-defs}
 %   \cmd{\begin}\texttt{\{pst-pdf-defs\}} \dots
 %   \cmd{\end}\texttt{\{pst-pdf-defs\}}
 %   \par\noindent
-%   Sollen eigene Makros oder Umgebungen definiert werden, die das Zeichen
-%   \texttt{\&} (andere?) im Ersetzungstext enthalten, so m\"ussen diese
-%   Definitionen von der Umgebung |pst-pdf-defs| umschlossen werden.
+%   For defining macros or environments, which contain character \texttt{\&}
+%   (others?) in the output, these defintions have to be wrapped with
+%   environment |pst-pdf-defs|.
 %   \medskip
 % \fi
 %
@@ -565,8 +564,8 @@
 %   \item[innerframe=\TorF] As in ``|frame|'', but the frame is drawn
 %     around the gra\-phics, not its box.
 %
-%   \item[ignore=\TorF] If ``|true|'' no graphics is output. With
-%     \cmd{\savepicture}\marg{name} the graphics can be used later in a
+%   \item[ignore=\TorF] If set to ``|true|'' no graphics are outputted. With 
+%     macro \cmd{\savepicture}\marg{name} the graphics can be used later in a
 %     different place via \cmd{\usepicture}. Default: false.
 %
 %   \item[showname=\TorF] A caption of minimal font size records the used
@@ -729,6 +728,8 @@
 %   extensions. (RN)}
 % \changes{v1.0r}{2005/03/25}{Changed \cmd{\ppf@is@known@graphic} to
 %   \cmd{\ppf@is@pdfTeX@graphic}. Now pdf\TeX\ graphics are prefered. (RN)}
+% \changes{v1.2e}{2019/11/15}{Parameter \string\verb+#2+ is detokenized when 
+%   expanded to \cmd{\pdfTeXext}}
 % \ifGERMAN
 % Parameter |#1| ist der Name einer Grafikdatei mit oder ohne Endung,
 % Parameter |#2| enth\"alt die g\"ultigen Dateiendungen im pdf-Modus,
@@ -1231,7 +1232,7 @@
 % \fi
 % \changes{v1.1b}{2005/04/09}{Ignore the call of
 %   \cmd{\nofiles} inside of \pkgname{preview}. (RN)}
-% \changes{v1.1p1}{2007/07/27}{\cmd{\let}\cmd{\output}\cmd{\@gobble}
+% \changes{v1.1p}{2007/07/27}{\cmd{\let}\cmd{\output}\cmd{\@gobble}
 %   before loading of ``preview'' added. (RN)}
 % \changes{v1.1t}{2008/09/09}{Remove the line 
 %   ``\cmd{\let}\cmd{\output}\cmd{\@gobble}'' because of bad side 
