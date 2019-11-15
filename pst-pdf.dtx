@@ -50,7 +50,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{830}
+% \CheckSum{839}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -816,12 +816,17 @@
 % \changes{v1.1p}{2007/06/04}{\cmd{\nofiles} makes \cmd{\makeindex} and
 %   \cmd{\makeglossary} to \cmd{\relax}. \cmd{\@empty} is better
 %   because of later \cmd{\renewcommand}'s.}
+% \changes{v1.2e}{2019/11/15}{gobble optional argument for \cmd{\makeindex}, 
+%   \cmd{\makeglossary} and \cmd{\printindex}}
 % \changes{v1.1q}{2008/02/17}{\cmd{\overfullrule} must not be > 0.}
 %    \begin{macrocode}
   \PackageInfo{pst-pdf}{%
     MODE: \ppf@TeX@mode\space (dvi -- extraction mode)}
   \nofiles
-  \let\makeindex\@empty \let\makeglossary\@empty
+  \let\makeindex\@empty \let\makeglossary\@empty \let\printindex\@empty
+  \renewcommand*\makeindex[1][]{}%
+  \renewcommand*\makeglossary[1][]{}%
+  \renewcommand*\printindex[1][]{}%
   \AtBeginDocument{\overfullrule=\z@}%
   \if@ppf@PST@used\RequirePackage{pstricks}\fi
   \RequirePackage[active,dvips,tightpage]{preview}[2005/01/29]%
