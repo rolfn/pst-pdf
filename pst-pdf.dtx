@@ -24,7 +24,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{pst-pdf}
 %<*package>
-    [2017/06/22 v1.2d PS graphics for pdfLaTeX (RN,HjG)]
+    [2019/11/15 v1.2e PS graphics for pdfLaTeX (RN,HjG)]
 %</package>
 %
 %<*driver>
@@ -50,7 +50,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{832}
+% \CheckSum{830}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -747,7 +747,7 @@
 \newcommand*\ppf@is@pdfTeX@graphic[5]{%
   \@ppf@pdftex@graphicfalse%
   \begingroup
-    \edef\pdfTeXext{#2}%
+    \edef\pdfTeXext{\detokenize\expandafter{#2}}%
 %    \end{macrocode}
 % \ifGERMAN
 % Statt Einladen einer identifizierten Grafik nur Test der Grafikendung.
@@ -757,9 +757,8 @@
 % \fi
 %    \begin{macrocode}
     \def\Gin@setfile##1##2##3{%
-      \edef\@tempb{##2}%
-      \@for\@tempa:=\pdfTeXext\do{%
-        \ifx\@tempa\@tempb\global\@ppf@pdftex@graphictrue\fi}}%
+      \@expandtwoargs\in@{,\detokenize\expandafter{##2},}{,\pdfTeXext,}%
+      \ifin@\global\@ppf@pdftex@graphictrue\fi}%
 %    \end{macrocode}
 % \ifGERMAN
 % Es m\"ussen Dateitypen beider Moden gefunden werden, um
