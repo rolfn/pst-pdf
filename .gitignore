@@ -1,0 +1,14 @@
+## auxiliary files
+*.aux
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.log
+*.synctex*
+## dist
+*.sty
+## example
+pst-pdf-example*
