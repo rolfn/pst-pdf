@@ -1,0 +1,19 @@
+## binary files
+*.tar
+*.tar.gz
+*.zip
+## auxiliary files
+*.aux
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.log
+*.synctex*
+## dist
+CHANGES*
+*.sty
+## example
+pst-pdf-example*

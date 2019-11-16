@@ -24,7 +24,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{pst-pdf}
 %<*package>
-    [2017/06/22 v1.2d PS graphics for pdfLaTeX (RN,HjG)]
+    [2019/11/15 v1.2e PS graphics for pdfLaTeX (RN,HjG)]
 %</package>
 %
 %<*driver>
@@ -50,7 +50,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{832}
+% \CheckSum{839}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -76,7 +76,7 @@
 % \changes{v1.0j}{2005/02/22}{Check AtBeginDocument for package
 %   `pstricks' even if ``nopstricks'' is given. (RN)}
 % \changes{v1.0j}{2005/02/22}{For \cmd{\includegraphics}
-% \cmd{\usepicture} and |postscript| the new options ``frame'',
+% \cmd{\usepicture} and \string\verb+postscript+ the new options ``frame'',
 % ``framesep'', ``framerule'', ``linewidth'', and ``ignore'' added. (RN)}
 % \changes{v1.0l}{2005/02/25}{Options ``framesep'', ``framerule'',
 % ``linewidth'' removed, ``fname'' and ``innerframe'' added. (RN)}
@@ -248,7 +248,7 @@
 %     Es werden zus\"atzlich die mathematischen Umgebungen
 %     \env{displaymath}, \env{eqnarray} und \env{\$\$} extrahiert und im
 %     pdf-Modus
-%     als Grafik eingefügt. So k\"onnen zus\"atzliche PSTricks-Erg\"anzungen
+%     als Grafik eingef\"ugt. So k\"onnen zus\"atzliche PSTricks-Erg\"anzungen
 %     leicht dem Inhalt dieser Umgebungen zugef\"ugt werden. (Frage: Wie
 %     verhalten sich die AMS\LaTeX-Umgebungen?)
 %
@@ -484,7 +484,7 @@
 %   \cmd{\includegraphicx}\oarg{keys}\parg{pfxadd}\ooarg{ovpfgd}\oarg{ovpbgd}%
 %     \marg{filename}
 %   \par\noindent
-%   Wie im Paket \pkgname{psfragx} definiert zu verwenden.
+%   To be used like defined in package\pkgname{psfragx}.
 %   \medskip
 %
 %   \DescribeMacro{\savepicture}
@@ -498,18 +498,17 @@
 %   \DescribeMacro{\usepicture}
 %   \cmd{\usepicture}\oarg{keys}\marg{name}
 %   \par\noindent
-%   Die zuvor mit \cmd{\savepicture} gespeicherte Grafik wird
-%   ausgegeben. Der optionale Parameter entpricht dem bei der Anweisung
-%   \cmd{\includegraphics} m\"oglichen.
+%   The graphic previously stored with \cmd{\savepicture} is outputted. The 
+%   optional parameter corresponds to \cmd{\includegraphics}.
 %   \medskip
 %
 %   \DescribeEnv{pst-pdf-defs}
 %   \cmd{\begin}\texttt{\{pst-pdf-defs\}} \dots
 %   \cmd{\end}\texttt{\{pst-pdf-defs\}}
 %   \par\noindent
-%   Sollen eigene Makros oder Umgebungen definiert werden, die das Zeichen
-%   \texttt{\&} (andere?) im Ersetzungstext enthalten, so m\"ussen diese
-%   Definitionen von der Umgebung |pst-pdf-defs| umschlossen werden.
+%   For defining macros or environments, which contain character \texttt{\&}
+%   (others?) in the output, these defintions have to be wrapped with
+%   environment |pst-pdf-defs|.
 %   \medskip
 % \fi
 %
@@ -565,8 +564,8 @@
 %   \item[innerframe=\TorF] As in ``|frame|'', but the frame is drawn
 %     around the gra\-phics, not its box.
 %
-%   \item[ignore=\TorF] If ``|true|'' no graphics is output. With
-%     \cmd{\savepicture}\marg{name} the graphics can be used later in a
+%   \item[ignore=\TorF] If set to ``|true|'' no graphics are outputted. With 
+%     macro \cmd{\savepicture}\marg{name} the graphics can be used later in a
 %     different place via \cmd{\usepicture}. Default: false.
 %
 %   \item[showname=\TorF] A caption of minimal font size records the used
@@ -729,6 +728,8 @@
 %   extensions. (RN)}
 % \changes{v1.0r}{2005/03/25}{Changed \cmd{\ppf@is@known@graphic} to
 %   \cmd{\ppf@is@pdfTeX@graphic}. Now pdf\TeX\ graphics are prefered. (RN)}
+% \changes{v1.2e}{2019/11/15}{Parameter \string\verb+#2+ is detokenized when 
+%   expanded to \cmd{\pdfTeXext}}
 % \ifGERMAN
 % Parameter |#1| ist der Name einer Grafikdatei mit oder ohne Endung,
 % Parameter |#2| enth\"alt die g\"ultigen Dateiendungen im pdf-Modus,
@@ -747,7 +748,7 @@
 \newcommand*\ppf@is@pdfTeX@graphic[5]{%
   \@ppf@pdftex@graphicfalse%
   \begingroup
-    \edef\pdfTeXext{#2}%
+    \edef\pdfTeXext{\detokenize\expandafter{#2}}%
 %    \end{macrocode}
 % \ifGERMAN
 % Statt Einladen einer identifizierten Grafik nur Test der Grafikendung.
@@ -757,9 +758,8 @@
 % \fi
 %    \begin{macrocode}
     \def\Gin@setfile##1##2##3{%
-      \edef\@tempb{##2}%
-      \@for\@tempa:=\pdfTeXext\do{%
-        \ifx\@tempa\@tempb\global\@ppf@pdftex@graphictrue\fi}}%
+      \@expandtwoargs\in@{,\detokenize\expandafter{##2},}{,\pdfTeXext,}%
+      \ifin@\global\@ppf@pdftex@graphictrue\fi}%
 %    \end{macrocode}
 % \ifGERMAN
 % Es m\"ussen Dateitypen beider Moden gefunden werden, um
@@ -817,12 +817,17 @@
 % \changes{v1.1p}{2007/06/04}{\cmd{\nofiles} makes \cmd{\makeindex} and
 %   \cmd{\makeglossary} to \cmd{\relax}. \cmd{\@empty} is better
 %   because of later \cmd{\renewcommand}'s.}
+% \changes{v1.2e}{2019/11/15}{gobble optional argument for \cmd{\makeindex}, 
+%   \cmd{\makeglossary} and \cmd{\printindex}}
 % \changes{v1.1q}{2008/02/17}{\cmd{\overfullrule} must not be > 0.}
 %    \begin{macrocode}
   \PackageInfo{pst-pdf}{%
     MODE: \ppf@TeX@mode\space (dvi -- extraction mode)}
   \nofiles
-  \let\makeindex\@empty \let\makeglossary\@empty
+  \let\makeindex\@empty \let\makeglossary\@empty \let\printindex\@empty
+  \renewcommand*\makeindex[1][]{}%
+  \renewcommand*\makeglossary[1][]{}%
+  \renewcommand*\printindex[1][]{}%
   \AtBeginDocument{\overfullrule=\z@}%
   \if@ppf@PST@used\RequirePackage{pstricks}\fi
   \RequirePackage[active,dvips,tightpage]{preview}[2005/01/29]%
@@ -1092,7 +1097,7 @@
     \ifpr@outer
 %    \end{macrocode}
 % \ifGERMAN
-% Im allgemeinen Fall sollen pdf\TeX-Grafiken bevorzugt werden (Einfügen
+% Im allgemeinen Fall sollen pdf\TeX-Grafiken bevorzugt werden (Einf\"ugen
 % erst im pdf\TeX-Modus). Ist nur eine DVIPS-Graphik vorhanden, dann
 % wirkt wieder die Originaldefintion und Registrierung beim
 % preview-Paket muss erfolgen.
@@ -1227,7 +1232,7 @@
 % \fi
 % \changes{v1.1b}{2005/04/09}{Ignore the call of
 %   \cmd{\nofiles} inside of \pkgname{preview}. (RN)}
-% \changes{v1.1p1}{2007/07/27}{\cmd{\let}\cmd{\output}\cmd{\@gobble}
+% \changes{v1.1p}{2007/07/27}{\cmd{\let}\cmd{\output}\cmd{\@gobble}
 %   before loading of ``preview'' added. (RN)}
 % \changes{v1.1t}{2008/09/09}{Remove the line 
 %   ``\cmd{\let}\cmd{\output}\cmd{\@gobble}'' because of bad side 
@@ -1578,7 +1583,7 @@
 % \ifGERMAN
 % Die im pdf\TeX-Modus unn\"utze Umdefinition von
 % \cmd{\includegraphics} (Paket \pkgname{psfragx}) f\"uhrt zu zweifachem
-% Einfügen des Ergebnisses, weshalb die Originaldefition wiederhergestellt
+% Einf\"ugen des Ergebnisses, weshalb die Originaldefition wiederhergestellt
 % wird.
 % \fi
 % \ifENGLISH
