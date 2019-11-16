@@ -53,6 +53,7 @@ dist : doc doc-DE pdf example CHANGES
 	@ echo $(ARCHNAME).tar.gz
 
 %.gls %.pdf : %.dtx $(PACKAGE).sty
+	$(PDFLATEX) $<
 	test -f $(basename $<).glo || touch -f $(basename $<).glo
 	test -f $(basename $<).idx || touch -f $(basename $<).idx
 	makeindex -s gglo.ist -t $(basename $<).glg -o $(basename $<).gls \
@@ -62,13 +63,14 @@ dist : doc doc-DE pdf example CHANGES
 	$(PDFLATEX) $<
 
 $(PACKAGE)-DE.gls $(PACKAGE)-DE.pdf : $(PACKAGE).dtx $(PACKAGE).sty
+	cp $< $(basename $@).dtx
+	$(PDFLATEX) '\newcommand*{\mainlang}{ngerman}\input{$(basename $@).dtx}'
 	test -f $(basename $@).glo || touch -f $(basename $@).glo
 	test -f $(basename $@).idx || touch -f $(basename $@).idx
 	makeindex -s gglo.ist -t $(basename $@).glg -o $(basename $@).gls \
 		$(basename $@).glo
 	makeindex -s gind.ist -t $(basename $@).ilg -o $(basename $@).ind \
 		$(basename $@).idx
-	cp $< $(basename $@).dtx
 	$(PDFLATEX) '\newcommand*{\mainlang}{ngerman}\input{$(basename $@).dtx}'
 	$(RM) $(basename $@).dtx
 
@@ -124,6 +126,8 @@ arch-tds : CHANGES pst-pdf.pdf pst-pdf-DE.pdf pst-pdf-example.pdf
 
 clean :
 	$(RM) $(addprefix $(PACKAGE), \
+	      .dvi .log .aux .bbl .blg .idx .ind .ilg .gls .glg .glo) \
+	      $(addprefix $(PACKAGE)-DE, \
 	      .dvi .log .aux .bbl .blg .idx .ind .ilg .gls .glg .glo) \
 	      $(addprefix $(basename $(EXAMPLE)), .ps .dvi .log .aux) \
 	      $(EXAMPLE) $(PDF_CONTAINER:.pdf=.ps) $(PDF_CONTAINER) \
