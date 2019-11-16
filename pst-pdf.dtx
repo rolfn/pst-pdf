@@ -50,7 +50,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{839}
+% \CheckSum{845}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -748,7 +748,8 @@
 \newcommand*\ppf@is@pdfTeX@graphic[5]{%
   \@ppf@pdftex@graphicfalse%
   \begingroup
-    \edef\pdfTeXext{\detokenize\expandafter{#2}}%
+    \edef\pdfTeXext{,#2,}%
+    \edef\pdfTeXext{\detokenize\expandafter{\pdfTeXext}}%
 %    \end{macrocode}
 % \ifGERMAN
 % Statt Einladen einer identifizierten Grafik nur Test der Grafikendung.
@@ -758,7 +759,8 @@
 % \fi
 %    \begin{macrocode}
     \def\Gin@setfile##1##2##3{%
-      \@expandtwoargs\in@{,\detokenize\expandafter{##2},}{,\pdfTeXext,}%
+      \edef\@tempa{,##2,}%
+      \@expandtwoargs\in@{\detokenize\expandafter{\@tempa}}{\pdfTeXext}%
       \ifin@\global\@ppf@pdftex@graphictrue\fi}%
 %    \end{macrocode}
 % \ifGERMAN
