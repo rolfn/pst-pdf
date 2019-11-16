@@ -21,7 +21,7 @@ ADDINPUTS = penguin.eps elephant.ps knuth.png psf-demo.eps \
 PDF_CONTAINER = $(EXAMPLE:.tex=-pics.pdf)
 
 ARCHFILES = $(PACKAGE).dtx $(PACKAGE).ins $(ADDINPUTS) Makefile \
-            README.md CHANGES CHANGES.tex \
+            README.md CHANGES \
             $(PACKAGE).pdf $(PACKAGE)-DE.pdf $(EXAMPLE:.tex=.pdf) \
             ps4pdf \
             ps4pdf.bat \
