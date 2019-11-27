@@ -50,7 +50,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{839}
+% \CheckSum{845}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -748,7 +748,8 @@
 \newcommand*\ppf@is@pdfTeX@graphic[5]{%
   \@ppf@pdftex@graphicfalse%
   \begingroup
-    \edef\pdfTeXext{\detokenize\expandafter{#2}}%
+    \edef\pdfTeXext{,#2,}%
+    \edef\pdfTeXext{\detokenize\expandafter{\pdfTeXext}}%
 %    \end{macrocode}
 % \ifGERMAN
 % Statt Einladen einer identifizierten Grafik nur Test der Grafikendung.
@@ -758,7 +759,8 @@
 % \fi
 %    \begin{macrocode}
     \def\Gin@setfile##1##2##3{%
-      \@expandtwoargs\in@{,\detokenize\expandafter{##2},}{,\pdfTeXext,}%
+      \edef\@tempa{,##2,}%
+      \@expandtwoargs\in@{\detokenize\expandafter{\@tempa}}{\pdfTeXext}%
       \ifin@\global\@ppf@pdftex@graphictrue\fi}%
 %    \end{macrocode}
 % \ifGERMAN
@@ -822,7 +824,7 @@
 % \changes{v1.1q}{2008/02/17}{\cmd{\overfullrule} must not be > 0.}
 %    \begin{macrocode}
   \PackageInfo{pst-pdf}{%
-    MODE: \ppf@TeX@mode\space (dvi -- extraction mode)}
+    MODE: \ppf@TeX@mode\space (dvi -- extraction mode)}%
   \nofiles
   \let\makeindex\@empty \let\makeglossary\@empty \let\printindex\@empty
   \renewcommand*\makeindex[1][]{}%
@@ -831,7 +833,7 @@
   \AtBeginDocument{\overfullrule=\z@}%
   \if@ppf@PST@used\RequirePackage{pstricks}\fi
   \RequirePackage[active,dvips,tightpage]{preview}[2005/01/29]%
-  \newcommand*\ppf@PreviewBbAdjust{}
+  \newcommand*\ppf@PreviewBbAdjust{}%
   \newcommand*\ppf@RestoreBbAdjust{%
     \let\PreviewBbAdjust\ppf@PreviewBbAdjust}%
 %    \end{macrocode}
@@ -853,9 +855,9 @@
     \newcount\pdfoutput
     \pdfoutput=1 %
     \input{pdftex.def}%
-    \edef\x{\endgroup\def\noexpand\ppf@other@extensions{\Gin@extensions}
+    \edef\x{\endgroup\def\noexpand\ppf@other@extensions{\Gin@extensions}%
     }%
-  \x
+  \x%
 %    \end{macrocode}
 % \changes{v1.1c}{2005/04/17}{Supress handling of pdf\LaTeX\ graphic
 %   formats in DVI mode. (RN)}
@@ -903,7 +905,7 @@
   \define@key{Gin}{ignore}[true]{}%
   \define@key{Gin}{showname}[true]{}%
   \define@key{Gin}{namefont}{}%
-  \@ifundefined{Gin@page}{\define@key{Gin}{page}{}}{}
+  \@ifundefined{Gin@page}{\define@key{Gin}{page}{}}{}%
 %    \end{macrocode}
 % \changes{v1.0o}{2005/03/12}{New code for ``notightpage''. (RN)}
 % \changes{v1.1r}{2008/05/02}{Fixed values for \cmd{\PreviewBbAdjust} 
@@ -989,7 +991,7 @@
         \expandafter\let\expandafter\ppf@pr@psmatrix%
           \expandafter=\csname pr@\string\psmatrix\endcsname
         \let\ppf@endpsmatrix=\endpsmatrix
-        \def\psmatrix{\ppf@test@mmode\ppf@psmatrix}
+        \def\psmatrix{\ppf@test@mmode\ppf@psmatrix}%
         \expandafter\def\csname pr@\string\psmatrix\endcsname{%
           \ppf@set@mode\ppf@pr@psmatrix}%
         \def\endpsmatrix{\ppf@endpsmatrix\ppf@set@mode}%
@@ -1030,7 +1032,7 @@
         ?({#{(#1)}{({#1})}}{}%
         ?({#{(#1)}{({#1})}}{}%
         ?({#{(#1)}{({#1})}}{}%
-        }]{\pst@object}}
+        }]{\pst@object}}%
 %    \end{macrocode}
 % \ifGERMAN
 % Mehrfaches testweises Setzen von Tabelleninhalten durch ``tabularx''
@@ -1072,7 +1074,7 @@
 %    \begin{macrocode}
   \def\Gscale@@box#1#2#3{%
     \toks@{\mbox}%
-  }
+  }%
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\Ginclude@graphics}
@@ -1175,7 +1177,7 @@
 %    \begin{macrocode}
   \if@ppf@PST@used
     \let\ppf@temp\AtBeginDvi\let\AtBeginDvi\@gobble
-    \def\c@lor@to@ps#1 #2\@@{}
+    \def\c@lor@to@ps#1 #2\@@{}%
     \RequirePackage{pstricks}\let\AtBeginDvi\ppf@temp
   \fi
 %    \end{macrocode}
@@ -1192,8 +1194,8 @@
 % Necessary if PSTricks $<$ 2.0.
 % \fi
 %    \begin{macrocode}
-      \PSTricksOff
-      \def\c@lor@to@ps#1 #2\@@{}
+      \PSTricksOff%
+      \def\c@lor@to@ps#1 #2\@@{}%
     }%
   }%
 %    \end{macrocode}
@@ -1204,7 +1206,7 @@
 % \PS\ output is now inhibited and later once again.
 % \fi
 %    \begin{macrocode}
-  \the\@temptokena
+  \the\@temptokena%
   \expandafter\AtBeginDocument\expandafter
     {\the\@temptokena\@temptokena{}}%
   \@ifundefined{PSTricksLoaded}{}{%
@@ -1303,7 +1305,7 @@
   \begingroup
     \input{dvips.def}%
     \edef\x{\endgroup\def\noexpand\ppf@other@extensions{\Gin@extensions}}%
-  \x
+  \x%
 %    \end{macrocode}
 % \ifGERMAN
 % Dummy-Definition f\"ur die im DVI-Modus g\"ultigen Dateitypen.
@@ -1336,7 +1338,7 @@
     \or
       \ifGin@frame\else\let\@tempa\relax\fi
     \fi
-    \@tempa
+    \@tempa%
   }%
   \define@key{Gin}{showname}[true]{%
     \lowercase{\Gin@boolkey{#1}}{showname}}%
@@ -1344,7 +1346,7 @@
     \begingroup
       \@temptokena\expandafter{\ppf@namefont#1}%
       \edef\x{\endgroup\def\noexpand\ppf@namefont{\the\@temptokena}}%
-    \x
+    \x%
   }%
   \newcommand*\ppf@filename{}%
   \newcommand*\ppf@namefont{\tiny\ttfamily}%
@@ -1435,11 +1437,11 @@
 % ``|frame@@=0|''\,$=$\,inner frame, ``|frame@@=1|''\,$=$\,outer frame.
 % \fi
 %    \begin{macrocode}
-        \edef\@tempa{\noexpand\ppf@Gin@ii[frame@@=0,\the\@temptokena,
+        \edef\@tempa{\noexpand\ppf@Gin@ii[frame@@=0,\the\@temptokena,%
           frame@@=1]{\ppf@tempb}}%
-        \@tempa
+        \@tempa%
         \ifGin@showname
-          \ppf@namefont
+          \ppf@namefont%
           \raisebox{-\ht\strutbox}[0pt][0pt]{\llap{\ppf@filename}}%
           \gdef\ppf@filename{}%
         \fi
@@ -1493,8 +1495,8 @@
       \ifnum\c@pspicture>\z@
         \filename@parse{\PDFcontainer}%
         \PackageWarningNoLine{pst-pdf}{%
-          File `\PDFcontainer' not found.\MessageBreak
-          Use the following commands to create it:\MessageBreak
+          File `\PDFcontainer' not found. \MessageBreak
+          Use the following commands to create it: \MessageBreak
           ----------------------------------------------------
           \MessageBreak
           latex \jobname.tex\MessageBreak
@@ -1568,7 +1570,7 @@
     \else
       \def\ppf@Gin@keys{}%
     \fi
-    \ppf@@getpicture
+    \ppf@@getpicture%
     \Collect@Body\@gobble}{}%
   \AtBeginDocument{%
     \@ifundefined{PSTricksLoaded}{}{%
@@ -1649,15 +1651,15 @@
           \xdef\ppf@filename{#2}%
           \setbox\z@\hbox{\pdfrefximage\@nameuse{ppf@@@#2}}%
           \Gin@nat@height\ht\z@ \Gin@nat@width\wd\z@
-          \def\Gin@llx{0} \let\Gin@lly\Gin@llx
+          \def\Gin@llx{0}\let\Gin@lly\Gin@llx
           \Gin@defaultbp\Gin@urx{\Gin@nat@width}%
           \Gin@defaultbp\Gin@ury{\Gin@nat@height}%
-          \Gin@bboxtrue\Gin@viewport@code
+          \Gin@bboxtrue\Gin@viewport@code%
           \Gin@nat@height\Gin@ury bp%
           \advance\Gin@nat@height-\Gin@lly bp%
           \Gin@nat@width\Gin@urx bp%
           \advance\Gin@nat@width-\Gin@llx bp%
-          \Gin@req@sizes
+          \Gin@req@sizes%
           \ht\z@\Gin@req@height \wd\z@\Gin@req@width
           \leavevmode\box\z@}%
         \define@key{Gin}{type}{}%
@@ -1748,14 +1750,14 @@
 % \fi
 %    \begin{macrocode}
   \PackageInfo{pst-pdf}{MODE: \ppf@TeX@mode\space (inactive mode)}%
-  \newenvironment{postscript}[1][]{\ignorespaces}{}
+  \newenvironment{postscript}[1][]{\ignorespaces}{}%
   \let\ppf@is@pdfTeX@graphic\relax
 \fi
 %    \end{macrocode}
 % \changes{v1.0f}{2005/02/04}{Config file loading added. (RN)}
 %    \begin{macrocode}
 \InputIfFileExists{pst-pdf.cfg}{%
-  \PackageInfo{pst-pdf}{Local config file pst-pdf.cfg used}}{}
+  \PackageInfo{pst-pdf}{Local config file pst-pdf.cfg used}}{}%
 %</package>
 %    \end{macrocode}
 %
