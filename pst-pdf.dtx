@@ -24,7 +24,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesPackage{pst-pdf}
 %<*package>
-    [2019/11/15 v1.2e PS graphics for pdfLaTeX (RN,HjG)]
+    [2020/10/10 v1.2f PS graphics for pdfLaTeX (RN,HjG)]
 %</package>
 %
 %<*driver>
@@ -50,7 +50,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{845}
+% \CheckSum{818}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -839,25 +839,22 @@
 %    \end{macrocode}
 % \ifGERMAN
 % Es werden auch die im pdf\LaTeX-Modus erlaubten Endungen von Grafikdateien
-% ben\"otigt.
+% ben\"otigt (Argument aus `pdftex.def' -- 2020/10/05 -- kopiert).
 % \fi
 % \ifENGLISH
 % The pdf\LaTeX\ mode compliant graphics file formats are needed too.
+% (Argument copied from `pdftex.def' -- 2020/10/05).
 % \fi
 % \changes{v1.1u}{2008/09/16}{\cmd{\pdfoutput} must be set when
 %   loading ``pdftex.def'' in DVI mode. (RN)}
 % \changes{v1.1v}{2008/10/09}{Local redefinition of \cmd{\pdfoutput} to be a 
 %   counter. (RN)}
+% \changes{v1.2f}{2020/10/10}{No more loading of file `pdftex.def' (RN)}
 %    \begin{macrocode}
-  \begingroup
-    \let\AtBeginDocument\@gobble \let\PackageWarningNoLine\@gobbletwo
-    \chardef\pdftexversion=121 %
-    \newcount\pdfoutput
-    \pdfoutput=1 %
-    \input{pdftex.def}%
-    \edef\x{\endgroup\def\noexpand\ppf@other@extensions{\Gin@extensions}%
-    }%
-  \x%
+  \def\ppf@other@extensions{%
+    .pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,%
+    .PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2%
+  }  
 %    \end{macrocode}
 % \changes{v1.1c}{2005/04/17}{Supress handling of pdf\LaTeX\ graphic
 %   formats in DVI mode. (RN)}
@@ -1296,16 +1293,15 @@
 %    \end{macrocode}
 % \ifGERMAN
 % Es werden auch die im DVI-Modus erlaubten Endungen von Grafikdateien
-% ben\"otigt.
+% ben\"otigt (Argument aus `dvips.def' -- 2017/06/20 -- kopiert).
 % \fi
 % \ifENGLISH
 % Too the supported file name extensions from DVI mode are needed.
+% (Argument copied from `dvips.def' -- 2017/06/20).
 % \fi
-%    \begin{macrocode}
-  \begingroup
-    \input{dvips.def}%
-    \edef\x{\endgroup\def\noexpand\ppf@other@extensions{\Gin@extensions}}%
-  \x%
+% \changes{v1.2f}{2020/10/10}{No more loading of file `dvisps.def' (RN)}
+%    \begin{macrocode} 
+  \def\ppf@other@extensions{.eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps}%
 %    \end{macrocode}
 % \ifGERMAN
 % Dummy-Definition f\"ur die im DVI-Modus g\"ultigen Dateitypen.
